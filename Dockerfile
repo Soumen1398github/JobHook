@@ -10,4 +10,4 @@ COPY --from=build /target/Job-Portal-0.0.1-SNAPSHOT.jar Job-Portal.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "Job-Portal.jar"]
+ENTRYPOINT ["java","-jar","Job-Portal.jar"]
