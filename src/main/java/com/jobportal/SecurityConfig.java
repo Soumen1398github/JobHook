@@ -28,6 +28,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .authorizeHttpRequests(req -> req
+                .requestMatchers("/**").permitAll()
+                .anyRequest().authenticated())
+            .csrf(csrf -> csrf.disable());
+
+        return http.build();
+    	
+//    	http.csrf(csrf->csrf.disable())
+//    	.authorizeRequests()
+//    	.requestMatchers("/auth/login", "/users/register", "/users/verifyOtp/**", "/users/sendOtp/**").permitAll()
+//    	.anyRequest().authenticated()
+//    	.and().exceptionHandling(ex->ex.authenticationEntryPoint(point))
+//    	.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//    	http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+//    	return http.build();
+    	
             .csrf(csrf -> csrf.disable())
             .cors(cors -> {}) // ✅ Enable CORS with our above config
             .authorizeHttpRequests(auth -> auth
