@@ -1,16 +1,14 @@
-
 package com.jobportal;
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 import com.jobportal.jwt.JwtAuthenticationEntryPoint;
 import com.jobportal.jwt.JwtAuthenticationFilter;
@@ -24,28 +22,12 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter filter;
 
-    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(req -> req
-                .requestMatchers("/**").permitAll()
-                .anyRequest().authenticated())
-            .csrf(csrf -> csrf.disable());
 
-        return http.build();
-    	
-//    	http.csrf(csrf->csrf.disable())
-//    	.authorizeRequests()
-//    	.requestMatchers("/auth/login", "/users/register", "/users/verifyOtp/**", "/users/sendOtp/**").permitAll()
-//    	.anyRequest().authenticated()
-//    	.and().exceptionHandling(ex->ex.authenticationEntryPoint(point))
-//    	.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//    	http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-//    	return http.build();
-    	
+        http
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> {}) // ✅ Enable CORS with our above config
+            .cors(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/auth/login",
@@ -63,4 +45,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
